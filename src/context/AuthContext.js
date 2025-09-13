@@ -7,7 +7,7 @@ import {
   GithubAuthProvider
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from '../lib/firebase';
+import { auth, db } from '@/lib/firebase';
 
 const AuthContext = createContext({});
 
