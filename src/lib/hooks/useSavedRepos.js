@@ -50,9 +50,15 @@ export function useSavedRepos() {
       name: repo.name,
       full_name: repo.full_name,
       stars: repo.stars,
+      forks: repo.forks,
       html_url: repo.html_url,
       description: repo.description,
       difficulty_level : repo.difficulty_level,
+      owner: {
+              login: repo.owner.login,
+              avatar_url: repo.owner.avatar_url,
+              html_url: repo.owner.html_url,
+            },
       language: repo.language,
       savedAt: new Date(),
     });

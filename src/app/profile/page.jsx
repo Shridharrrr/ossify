@@ -1,11 +1,86 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AppSidebar from '@/components/AppSidebar';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, userData, updateUserPreferences } = useAuth(); // Use userData instead of user
+  const [preferences, setPreferences] = useState({
+    languages: [],
+    experienceLevel: 'beginner',
+    topics: [],
+    notifications: {
+      recommendations: true,
+      goodFirstIssues: false
+    }
+  });
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState('');
+
+  // Initialize preferences from userData if available
+  useEffect(() => {
+    if (userData?.preferences) {
+      setPreferences(userData.preferences);
+    }
+  }, [userData]); // Depend on userData instead of user
+
+  const handleLanguageToggle = (language) => {
+    setPreferences(prev => ({
+      ...prev,
+      languages: prev.languages.includes(language)
+        ? prev.languages.filter(lang => lang !== language)
+        : [...prev.languages, language]
+    }));
+  };
+
+  const handleTopicToggle = (topic) => {
+    setPreferences(prev => ({
+      ...prev,
+      topics: prev.topics.includes(topic)
+        ? prev.topics.filter(t => t !== topic)
+        : [...prev.topics, topic]
+    }));
+  };
+
+  const handleNotificationToggle = (type) => {
+    setPreferences(prev => ({
+      ...prev,
+      notifications: {
+        ...prev.notifications,
+        [type]: !prev.notifications[type]
+      }
+    }));
+  };
+
+  const handleExperienceChange = (e) => {
+    setPreferences(prev => ({
+      ...prev,
+      experienceLevel: e.target.value
+    }));
+  };
+
+  const handleSavePreferences = async () => {
+    setIsSaving(true);
+    setSaveStatus('saving');
+    
+    try {
+      await updateUserPreferences(preferences);
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus(''), 3000);
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus(''), 3000);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const programmingLanguages = ['JavaScript', 'Python', 'Java', 'TypeScript', 'Go', 'Rust'];
+  const interestTopics = ['Web Development', 'Machine Learning', 'DevOps', 'Mobile', 'Data Science', 'Security'];
+  const experienceLevels = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
 
   return (
     <ProtectedRoute>
@@ -59,10 +134,16 @@ export default function ProfilePage() {
                       Preferred Programming Languages
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {['JavaScript', 'Python', 'Java', 'TypeScript', 'Go', 'Rust'].map((lang) => (
+                      {programmingLanguages.map((lang) => (
                         <button
                           key={lang}
-                          className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                          type="button"
+                          onClick={() => handleLanguageToggle(lang)}
+                          className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                            preferences.languages.includes(lang)
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-700'
+                          }`}
                         >
                           {lang}
                         </button>
@@ -74,11 +155,16 @@ export default function ProfilePage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Experience Level
                     </label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                      <option>Beginner</option>
-                      <option>Intermediate</option>
-                      <option>Advanced</option>
-                      <option>Expert</option>
+                    <select 
+                      value={preferences.experienceLevel}
+                      onChange={handleExperienceChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    >
+                      {experienceLevels.map(level => (
+                        <option key={level.toLowerCase()} value={level.toLowerCase()}>
+                          {level}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -87,10 +173,16 @@ export default function ProfilePage() {
                       Interested Topics
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {['Web Development', 'Machine Learning', 'DevOps', 'Mobile', 'Data Science', 'Security'].map((topic) => (
+                      {interestTopics.map((topic) => (
                         <button
                           key={topic}
-                          className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                          type="button"
+                          onClick={() => handleTopicToggle(topic)}
+                          className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                            preferences.topics.includes(topic)
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-700'
+                          }`}
                         >
                           {topic}
                         </button>
@@ -99,10 +191,20 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="mt-6">
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    Save Preferences
+                <div className="mt-6 flex items-center gap-4">
+                  <button 
+                    onClick={handleSavePreferences}
+                    disabled={isSaving}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSaving ? 'Saving...' : 'Save Preferences'}
                   </button>
+                  {saveStatus === 'success' && (
+                    <span className="text-green-600 text-sm">✓ Preferences saved!</span>
+                  )}
+                  {saveStatus === 'error' && (
+                    <span className="text-red-600 text-sm">Error saving preferences</span>
+                  )}
                 </div>
               </div>
 
@@ -142,8 +244,15 @@ export default function ProfilePage() {
                       <p className="font-medium text-gray-900">New repository recommendations</p>
                       <p className="text-sm text-gray-500">Get notified when we find new projects for you</p>
                     </div>
-                    <button className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-blue-600 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
-                      <span className="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                    <button 
+                      onClick={() => handleNotificationToggle('recommendations')}
+                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${
+                        preferences.notifications.recommendations ? 'bg-blue-600' : 'bg-gray-200'
+                      }`}
+                    >
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        preferences.notifications.recommendations ? 'translate-x-5' : 'translate-x-0'
+                      }`}></span>
                     </button>
                   </div>
                   
@@ -152,8 +261,15 @@ export default function ProfilePage() {
                       <p className="font-medium text-gray-900">Good first issues</p>
                       <p className="text-sm text-gray-500">Alert me about beginner-friendly issues in saved repos</p>
                     </div>
-                    <button className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
-                      <span className="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                    <button 
+                      onClick={() => handleNotificationToggle('goodFirstIssues')}
+                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${
+                        preferences.notifications.goodFirstIssues ? 'bg-blue-600' : 'bg-gray-200'
+                      }`}
+                    >
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        preferences.notifications.goodFirstIssues ? 'translate-x-5' : 'translate-x-0'
+                      }`}></span>
                     </button>
                   </div>
                 </div>

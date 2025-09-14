@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from '@/context/AuthContext';
 import { useState, useEffect } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppSidebar from "@/components/AppSidebar";
@@ -12,6 +13,7 @@ export default function DiscoverPage() {
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const { savedRepos, saveRepo, removeRepo, isSaved } = useSavedRepos();
+  const {user} = useAuth();
 
   const {
     repositories,
@@ -103,7 +105,7 @@ export default function DiscoverPage() {
         <div className="p-6 lg:p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Discover Repositories
+              Welcome, {user?.displayName?.split(' ')[0]}! 👋
             </h1>
             <p className="text-gray-600">
               Find amazing open source projects that match your skills and
