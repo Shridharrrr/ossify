@@ -26,7 +26,6 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, activeIcon: HomeSolid },
   { name: 'Discover', href: '/discover', icon: MagnifyingGlassIcon, activeIcon: MagnifyingGlassSolid },
   { name: 'Saved Repos', href: '/saved', icon: BookmarkIcon, activeIcon: BookmarkSolid },
-  { name: 'Collections', href: '/collections', icon: FolderIcon, activeIcon: FolderSolid },
   { name: 'Profile', href: '/profile', icon: UserIcon, activeIcon: UserSolid },
 ];
 
