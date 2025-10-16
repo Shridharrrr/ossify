@@ -1,150 +1,163 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Instrument_Serif } from "next/font/google";
+import { Domine } from "next/font/google";
+import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
+
+const domine = Domine({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
 
 export default function HomePage() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm shadow-sm">
+    <div className="min-h-screen bg-black flex flex-col relative overflow-hidden">
+      <BackgroundRippleEffect rows={12} cols={30} cellSize={48} />
+
+      <nav className="bg-transparent backdrop-blur-sm shadow-sm relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold text-gray-900">
-              Ossify
-            </Link>
-            
+          <div className="flex justify-between items-center h-24">
+            <div className="text-center flex justify-center">
+              <h2
+                className={`text-3xl ${domine.className} text-white font-bold`}
+              >
+                Oss<span className="text-neutral-400">ify</span>
+              </h2>
+            </div>
+
             <div className="flex items-center gap-4">
-              {user ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    {user.photoURL && (
-                      <img
-                        src={user.photoURL}
-                        alt={user.displayName}
-                        className="w-8 h-8 rounded-full"
-                      />
-                    )}
-                    <span className="text-sm text-gray-700">
-                      {user.displayName}
-                    </span>
-                  </div>
-                  <Link 
-                    href="/dashboard"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                </>
-              ) : (
-                <Link 
-                  href="/auth"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Sign In
-                </Link>
-              )}
+              <Button
+                onClick={() => router.push("/discover")}
+                className="bg-black text-white rounded-none px-6 py-2 border-1 border-gray-500 hover:text-yellow-300 hover:-translate-y-1 transition-transform duration-200"
+              >
+                Star on Github
+              </Button>
+              <Button
+                onClick={() => router.push("/auth")}
+                className="bg-white text-black rounded-none px-6 py-2 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200"
+              >
+                Get Started
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <main className="flex-1 max-w-7xl mx-auto flex-col justify-center items-center px-4 sm:px-6 lg:px-8 mt-36 relative z-10">
         <div className="text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1
+            className={`text-6xl font-bold text-neutral-400 mb-4 ${instrumentSerif.className} text-center`}
+          >
             Discover Amazing
-            <span className="text-blue-600 block">Open Source Projects</span>
+            <span className="text-white block text-center">
+              Open Source Projects
+            </span>
           </h1>
-          
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Find the perfect repositories to contribute to based on your skills, interests, and experience level. Start making meaningful contributions today.
+
+          <p className="text-sm mb-5 max-w-2xl mx-auto text-neutral-400 font-medium leading-5 transition-all duration-300 sm:text-base text-center">
+            Find the perfect repositories to contribute to based on your skills,
+            interests, and experience.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            {user ? (
-              <>
-                <Link 
-                  href="/discover"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Discover Repositories
-                </Link>
-                <Link 
-                  href="/dashboard"
-                  className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-                >
-                  Go to Dashboard
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link 
-                  href="/auth"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Get Started
-                </Link>
-                <Link 
-                  href="/discover"
-                  className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-                >
-                  Browse Projects
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Discovery</h3>
-              <p className="text-gray-600">
-                Find repositories that match your programming languages, interests, and skill level with intelligent filtering.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Beginner Friendly</h3>
-              <p className="text-gray-600">
-                Discover projects with "good first issues" and active maintainers ready to help new contributors.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Track Progress</h3>
-              <p className="text-gray-600">
-                Save interesting repositories, track your contributions, and build your open source portfolio.
-              </p>
-            </div>
+            <Button
+              onClick={() => router.push("/auth")}
+              className="bg-white text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
+            >
+              Get Started
+            </Button>
           </div>
         </div>
       </main>
+
+      <section className="max-w-7xl mx-auto flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-32 relative z-10">
+        <div className="text-center">
+          <div
+            className="mb-4 mt-2 sm:mt-3 mx-auto lg:mx-0 px-3 py-2 w-fit text-xs sm:text-sm font-medium text-neutral-400 tracking-tight border-[2px] transition-all duration-300"
+            style={{
+              borderImage:
+                "conic-gradient(#d4d4d4 0deg, #171717 90deg, #d4d4d4 180deg, #171717 270deg, #d4d4d4 360deg) 1",
+            }}
+            role="banner"
+            aria-label="Project tagline"
+          >
+            Join hundreds of developers using ossify today
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+            <Button
+              onClick={() => router.push("/auth")}
+              className="bg-white text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
+            >
+              Get Started Now
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-transparent border-t border-gray-800 py-12 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between space-y-6 sm:space-y-0">
+            <div className="text-center sm:text-left w-full sm:w-60 flex justify-center sm:justify-start order-2 sm:order-1">
+              <p className="text-neutral-500 text-sm">
+                © {new Date().getFullYear()} Ossify. All rights reserved.
+              </p>
+            </div>
+
+            <div className="text-center flex justify-center order-1 sm:order-2">
+              <h2
+                className={`text-2xl ${domine.className} text-white font-bold`}
+              >
+                Oss<span className="text-neutral-400">ify</span>
+              </h2>
+            </div>
+
+            <div className="flex space-x-6 w-full sm:w-60 justify-center sm:justify-end order-3">
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-400 hover:text-white transition-colors duration-200"
+              >
+                <Github size={24} />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-400 hover:text-white transition-colors duration-200"
+              >
+                <Twitter size={24} />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-400 hover:text-white transition-colors duration-200"
+              >
+                <Linkedin size={24} />
+              </a>
+              <a
+                href="mailto:hello@ossify.com"
+                className="text-neutral-400 hover:text-white transition-colors duration-200"
+              >
+                <Mail size={24} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

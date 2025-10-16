@@ -16,7 +16,7 @@ export default function AuthPage() {
   useEffect(() => {
     // Redirect if already authenticated
     if (user) {
-      const redirectUrl = redirect || '/dashboard';
+      const redirectUrl = redirect || '/discover';
       router.push(redirectUrl);
     }
   }, [user, router, redirect]);
@@ -28,7 +28,7 @@ export default function AuthPage() {
     const result = await signInWithGoogle();
     
     if (result.success) {
-      const redirectUrl = redirect || '/dashboard';
+      const redirectUrl = redirect || '/discover';
       router.push(redirectUrl);
     } else {
       setError(result.error);
@@ -44,7 +44,7 @@ export default function AuthPage() {
     const result = await signInWithGitHub();
     
     if (result.success) {
-      const redirectUrl = redirect || '/dashboard';
+      const redirectUrl = redirect || '/discover';
       router.push(redirectUrl);
     } else {
       setError(result.error);

@@ -13,7 +13,7 @@ export default function DiscoverPage() {
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const { savedRepos, saveRepo, removeRepo, isSaved } = useSavedRepos();
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const {
     repositories,
@@ -118,7 +118,7 @@ export default function DiscoverPage() {
           {/* Search and Filters */}
           <form
             onSubmit={handleSearch}
-            className="bg-white rounded-lg shadow-sm border p-6 mb-8"
+            className="mb-8"
           >
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="flex-1">
@@ -127,16 +127,16 @@ export default function DiscoverPage() {
                   placeholder="Search repositories..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 text-gray-900 border bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
               <div className="flex gap-3">
                 <select
                   value={selectedLanguage}
                   onChange={(e) => setSelectedLanguage(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 text-gray-500 border bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
-                  <option value="all">All Languages</option>
+                  <option value="all">Select Languages</option>
                   <option value="javascript">JavaScript</option>
                   <option value="python">Python</option>
                   <option value="java">Java</option>
@@ -151,7 +151,7 @@ export default function DiscoverPage() {
                 <select
                   value={selectedLevel}
                   onChange={(e) => setSelectedLevel(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 text-gray-500 border bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Levels</option>
                   <option value="beginner">Beginner</option>

@@ -45,9 +45,7 @@ export default function AppSidebar({ children }) {
         {/* Mobile sidebar */}
         <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300">
           <div className="flex items-center justify-between h-16 px-4 border-b">
-            <Link href="/dashboard" className="text-xl font-bold text-gray-900">
               Ossify
-            </Link>
             <button
               onClick={() => setSidebarOpen(false)}
               className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100"
@@ -113,9 +111,7 @@ export default function AppSidebar({ children }) {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex min-h-0 flex-1 flex-col bg-white border-r border-gray-200">
           <div className="flex h-16 items-center px-4 border-b">
-            <Link href="/dashboard" className="text-xl font-bold text-gray-900">
               Ossify
-            </Link>
           </div>
           
           <nav className="flex-1 px-4 py-6 space-y-2">
@@ -173,7 +169,7 @@ export default function AppSidebar({ children }) {
       {/* Main content area */}
       <div className="lg:pl-64 flex flex-col flex-1">
         {/* Top navbar */}
-        <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow-sm border-b">
+        <div className="sticky top-0 z-10 flex lg:hidden h-16 flex-shrink-0 bg-white shadow-sm border-b">
           <button
             type="button"
             className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden"
