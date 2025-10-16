@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Instrument_Serif } from "next/font/google";
-import { Domine } from "next/font/google";
+import { Instrument_Serif,Domine,Electrolize } from "next/font/google";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 
@@ -16,6 +15,11 @@ const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
+});
+
+const electrolize = Electrolize({
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export default function HomePage() {
@@ -39,9 +43,34 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <Button
                 onClick={() => router.push("/discover")}
-                className="bg-black text-white rounded-none px-6 py-2 border-1 border-gray-500 hover:text-yellow-300 hover:-translate-y-1 transition-transform duration-200"
+                className={`group relative flex items-center justify-center gap-2 w-fit bg-black text-white rounded-none px-6 py-2 border border-neutral-700 hover:text-yellow-300 hover:-translate-y-1 transition-all duration-700 ease-out overflow-hidden ${electrolize.className}`}
               >
-                Star on Github
+                {/* Shimmer effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none z-0"></div>
+
+                {/* Gradient background on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800/0 via-gray-700/0 to-transparent group-hover:from-neutral-800/30 group-hover:via-neutral-700/40 group-hover:to-transparent transition-all duration-700 ease-out pointer-events-none z-0"></div>
+
+                <div className="flex items-center gap-1.5 z-10">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-white/40 group-hover:text-yellow-300 transition duration-300"
+                    aria-hidden="true"
+                  >
+                    <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                  </svg>
+                  <span className="tracking-tight transition group-hover:text-white">
+                    Star on Github
+                  </span>
+                </div>
               </Button>
               <Button
                 onClick={() => router.push("/auth")}
