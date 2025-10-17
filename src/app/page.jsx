@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Instrument_Serif,Domine,Electrolize } from "next/font/google";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
+import { Instrument_Serif, Domine, Electrolize } from "next/font/google";
 
 const domine = Domine({
   subsets: ["latin"],
@@ -42,8 +42,8 @@ export default function HomePage() {
 
             <div className="flex items-center gap-4">
               <Button
-                onClick={() => router.push("/discover")}
-                className={`group relative flex items-center justify-center gap-2 w-fit bg-black text-white rounded-none px-6 py-2 border border-neutral-700 hover:text-yellow-300 hover:-translate-y-1 transition-all duration-700 ease-out overflow-hidden ${electrolize.className}`}
+                onClick={() => window.open("https://github.com/Shridharrrr/ossify", "_blank")}
+                className={`group cursor-pointer active:scale-95 relative flex items-center justify-center gap-2 w-fit bg-black text-white rounded-none px-6 py-2 border border-neutral-700 hover:text-yellow-300 hover:-translate-y-1 transition-all duration-700 ease-out overflow-hidden ${electrolize.className}`}
               >
                 {/* Shimmer effect overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none z-0"></div>
@@ -74,7 +74,7 @@ export default function HomePage() {
               </Button>
               <Button
                 onClick={() => router.push("/auth")}
-                className="bg-white text-black rounded-none px-6 py-2 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200"
+                className="bg-white text-black rounded-none px-6 py-2 cursor-pointer hover:bg-gray-100 hover:-translate-y-1 active:scale-95 transition-transform duration-200"
               >
                 Get Started
               </Button>
@@ -102,7 +102,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Button
               onClick={() => router.push("/auth")}
-              className="bg-white text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
+              className="bg-white cursor-pointer active:scale-95 text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
             >
               Get Started
             </Button>
@@ -127,7 +127,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Button
               onClick={() => router.push("/auth")}
-              className="bg-white text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
+              className="bg-white cursor-pointer active:scale-95 text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
             >
               Get Started Now
             </Button>
@@ -139,8 +139,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-6 sm:space-y-0">
             <div className="text-center sm:text-left w-full sm:w-60 flex justify-center sm:justify-start order-2 sm:order-1">
-              <p className="text-neutral-500 text-sm">
-                © {new Date().getFullYear()} Ossify. All rights reserved.
+              <p className={`text-neutral-500 text-sm ${electrolize.className}`}>
+                ©{new Date().getFullYear()} Ossify. All rights reserved.
               </p>
             </div>
 

@@ -102,7 +102,7 @@ export default function DiscoverPage() {
   return (
     <ProtectedRoute>
       <AppSidebar>
-        <div className="p-6 lg:p-8">
+        <div className="p-6 lg:p-8 bg-black min-h-screen flex flex-col ">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Welcome, {user?.displayName?.split(' ')[0]}! 👋
