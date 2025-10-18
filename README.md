@@ -34,15 +34,6 @@ Ossify is a modern web application that helps developers discover trending open-
 - **Firebase Auth** - User authentication
 - **Firestore** - User data and saved repositories
 
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-### GitHub Token Setup
-1. Go to GitHub Settings → Developer settings → Personal access tokens
-2. Generate a new token with `repo` and `read:org` permissions
-3. Copy the token to your `.env.local` file
-
-
 ## 🎯 Usage Examples
 
 ### Finding Beginner Projects
