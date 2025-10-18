@@ -54,7 +54,3 @@ Ossify is a modern web application that helps developers discover trending open-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-**Made with ❤️ for the open source community**
-
-*Help developers find their next contribution and grow together!*
