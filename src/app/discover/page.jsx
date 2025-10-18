@@ -552,9 +552,28 @@ export default function DiscoverPage() {
                   <button
                     onClick={handleLoadMore}
                     disabled={loading}
-                    className="bg-white cursor-pointer active:scale-95 text-black rounded-none px-6 py-3 sm:px-8 sm:py-4 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                    className="group bg-white cursor-pointer w-auto active:scale-95 text-black rounded-none px-6 py-3 sm:px-8 sm:py-4 hover:bg-gray-100 hover:-translate-y-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base font-medium relative overflow-hidden"
                   >
-                    {loading ? "Loading..." : "Load More Repositories"}
+                    {loading ? (
+                      "Loading..."
+                    ) : (
+                      <>
+                        Load More Repositories
+                        <svg
+                          className="w-4 h-4 ml-2 mb-1 inline-block transform translate-y-0  opacity-100 transition-all duration-200"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                          />
+                        </svg>
+                      </>
+                    )}
                   </button>
                 </div>
               )}
