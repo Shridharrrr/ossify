@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 Ossify - Open Source Discovery Platform
 
-## Getting Started
+Ossify is a modern web application that helps developers discover trending open-source projects tailored to their skill level and interests. Find beginner-friendly repositories, contribute to meaningful projects, and grow your development skills.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🔍 Smart Repository Discovery
+- **Trending Projects**: Discover popular repositories based on different timeframes (daily, weekly, monthly)
+- **Skill-Based Filtering**: Find projects matching your experience level (Beginner, Intermediate, Advanced)
+- **Language-Specific Search**: Filter by programming languages including JavaScript, Python, Java, TypeScript, and more
+- **Contribution Opportunities**: Identify repositories with "good first issues" and "help wanted" labels
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 💾 Personalized Experience
+- **Save Favorites**: Bookmark interesting repositories for later
+- **User Preferences**: Set your preferred languages, topics, and experience level
+- **Dark Theme**: Beautiful dark interface optimized for long coding sessions
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 🎯 Smart Recommendations
+- **Difficulty Assessment**: Automatic classification of repository complexity
+- **Contribution Readiness**: Highlights projects actively seeking contributors
+- **Fresh Content**: Prioritizes recently updated and maintained projects
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Tech Stack
 
-## Learn More
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **Tailwind CSS** - Utility-first CSS framework
+- **Heroicons** - Beautiful SVG icons
 
-To learn more about Next.js, take a look at the following resources:
+### Backend & APIs
+- **Next.js API Routes** - Serverless functions
+- **GitHub REST API** - Repository data and search
+- **Firebase Auth** - User authentication
+- **Firestore** - User data and saved repositories
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### GitHub Token Setup
+1. Go to GitHub Settings → Developer settings → Personal access tokens
+2. Generate a new token with `repo` and `read:org` permissions
+3. Copy the token to your `.env.local` file
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎯 Usage Examples
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Finding Beginner Projects
+1. Set experience level to "Beginner"
+2. Filter by preferred languages
+3. Look for repositories with "good first issues"
+
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+**Made with ❤️ for the open source community**
+
+*Help developers find their next contribution and grow together!*
