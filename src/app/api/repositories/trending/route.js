@@ -38,49 +38,77 @@ export async function GET(request) {
         dateFilter = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     }
 
-    // Build search query for trending repositories
-    let searchQuery = `created:>${dateFilter.toISOString().split('T')[0]} stars:>10`;
-    
-    if (language && language !== 'all') {
-      searchQuery += ` language:${language.toLowerCase()}`;
-    }
+    // Search for repositories with different difficulty levels
+    const difficultySearches = await Promise.all([
+      // Beginner-friendly repos: newer repos with good first issues
+      searchRepositories({
+        headers,
+        language,
+        dateFilter,
+        query: `created:>${getDateDaysAgo(90)} stars:10..500 good-first-issues:>1`,
+        sort: 'stars',
+        per_page: Math.ceil(per_page / 3)
+      }),
+      
+      // Intermediate repos: established but not too large, with help wanted
+      searchRepositories({
+        headers,
+        language,
+        dateFilter,
+        query: `stars:100..2000 pushed:>${getDateDaysAgo(30)} help-wanted-issues:>0`,
+        sort: 'updated',
+        per_page: Math.ceil(per_page / 3)
+      }),
+      
+      // Advanced repos: popular and well-established
+      searchRepositories({
+        headers,
+        language,
+        dateFilter,
+        query: `stars:>1000 forks:>50 pushed:>${getDateDaysAgo(60)}`,
+        sort: 'stars',
+        per_page: Math.ceil(per_page / 3)
+      })
+    ]);
 
-    // Add good first issues to prioritize contribution-friendly repos
-    searchQuery += ' good-first-issues:>0';
+    // Combine all repositories
+    let allRepositories = [];
+    difficultySearches.forEach((repos, index) => {
+      if (repos && repos.length > 0) {
+        allRepositories = [...allRepositories, ...repos];
+      }
+    });
 
-    // Search for trending repositories
-    const searchResponse = await fetch(
-      `${GITHUB_API_BASE}/search/repositories?q=${encodeURIComponent(searchQuery)}&sort=stars&order=desc&page=${page}&per_page=${per_page}`,
-      { headers }
-    );
-
-    if (!searchResponse.ok) {
-      throw new Error(`GitHub API error: ${searchResponse.status}`);
-    }
-
-    const searchData = await searchResponse.json();
-
-    // If not enough new repos, get recently popular ones
-    let repositories = searchData.items;
-    
-    if (repositories.length < per_page) {
-      const popularQuery = `stars:>100 pushed:>${dateFilter.toISOString().split('T')[0]}` + 
+    // If we don't have enough repos, fill with additional searches
+    if (allRepositories.length < per_page) {
+      const remaining = per_page - allRepositories.length;
+      
+      // Get more mixed repositories
+      const mixedQuery = `created:>${getDateDaysAgo(180)} stars:>10` + 
         (language && language !== 'all' ? ` language:${language.toLowerCase()}` : '');
       
-      const popularResponse = await fetch(
-        `${GITHUB_API_BASE}/search/repositories?q=${encodeURIComponent(popularQuery)}&sort=updated&order=desc&per_page=${per_page - repositories.length}`,
+      const mixedResponse = await fetch(
+        `${GITHUB_API_BASE}/search/repositories?q=${encodeURIComponent(mixedQuery)}&sort=stars&order=desc&per_page=${remaining}`,
         { headers }
       );
 
-      if (popularResponse.ok) {
-        const popularData = await popularResponse.json();
-        repositories = [...repositories, ...popularData.items];
+      if (mixedResponse.ok) {
+        const mixedData = await mixedResponse.json();
+        allRepositories = [...allRepositories, ...(mixedData.items || [])];
       }
     }
 
+    // Remove duplicates based on repo ID
+    const uniqueRepos = allRepositories.reduce((acc, repo) => {
+      if (!acc.find(r => r.id === repo.id)) {
+        acc.push(repo);
+      }
+      return acc;
+    }, []);
+
     // Enhance repository data with contribution information
     const enhancedRepos = await Promise.all(
-      repositories.slice(0, per_page).map(async (repo) => {
+      uniqueRepos.slice(0, per_page).map(async (repo) => {
         try {
           // Get good first issues
           const goodFirstIssuesResponse = await fetch(
@@ -143,7 +171,7 @@ export async function GET(request) {
             recent_commits: recentCommits,
             trending_score: calculateTrendingScore(repo, goodFirstIssues, helpWantedIssues, recentCommits, dateFilter),
             is_new: isNewRepository(repo.created_at, 30), // New if created in last 30 days
-            difficulty_level: getTrendingDifficultyLevel(repo, goodFirstIssues, helpWantedIssues)
+            difficulty_level: calculateDifficultyLevel(repo, goodFirstIssues, helpWantedIssues)
           };
         } catch (error) {
           console.error(`Error enhancing trending repo ${repo.full_name}:`, error);
@@ -178,17 +206,26 @@ export async function GET(request) {
       })
     );
 
-    // Sort by trending score
-    enhancedRepos.sort((a, b) => b.trending_score - a.trending_score);
+    // Sort by trending score but ensure mix of difficulty levels
+    const sortedRepos = enhancedRepos.sort((a, b) => {
+      // Prioritize repositories with contribution opportunities
+      const aScore = a.trending_score + (a.total_contribution_opportunities * 20);
+      const bScore = b.trending_score + (b.total_contribution_opportunities * 20);
+      return bScore - aScore;
+    });
+
+    // Balance the results to ensure mix of difficulty levels
+    const balancedRepos = balanceDifficultyLevels(sortedRepos, per_page);
 
     return NextResponse.json({
-      repositories: enhancedRepos,
-      total_count: enhancedRepos.length,
+      repositories: balancedRepos,
+      total_count: balancedRepos.length,
       page,
       per_page,
       since,
       language: language || 'all',
-      date_filter: dateFilter.toISOString().split('T')[0]
+      date_filter: dateFilter.toISOString().split('T')[0],
+      difficulty_breakdown: getDifficultyBreakdown(balancedRepos)
     });
 
   } catch (error) {
@@ -200,46 +237,145 @@ export async function GET(request) {
   }
 }
 
-// Helper function to calculate trending score
+// Helper function to search repositories
+async function searchRepositories({ headers, language, dateFilter, query, sort, per_page }) {
+  try {
+    let searchQuery = query;
+    
+    if (language && language !== 'all') {
+      searchQuery += ` language:${language.toLowerCase()}`;
+    }
+
+    const searchResponse = await fetch(
+      `${GITHUB_API_BASE}/search/repositories?q=${encodeURIComponent(searchQuery)}&sort=${sort}&order=desc&per_page=${per_page}`,
+      { headers }
+    );
+
+    if (!searchResponse.ok) {
+      return [];
+    }
+
+    const searchData = await searchResponse.json();
+    return searchData.items || [];
+  } catch (error) {
+    console.error('Search error:', error);
+    return [];
+  }
+}
+
+// Helper function to calculate difficulty level
+function calculateDifficultyLevel(repo, goodFirstIssues, helpWantedIssues) {
+  const stars = repo.stargazers_count;
+  const forks = repo.forks_count;
+  const daysSinceCreated = Math.floor((Date.now() - new Date(repo.created_at)) / (1000 * 60 * 60 * 24));
+  const totalIssues = goodFirstIssues + helpWantedIssues;
+
+  // Beginner: Newer repos with good first issues and moderate stars
+  if (daysSinceCreated <= 90 && goodFirstIssues >= 2 && stars < 300) {
+    return 'beginner';
+  }
+
+  // Beginner: Smaller repos with good contribution opportunities
+  if (stars < 500 && totalIssues >= 3 && goodFirstIssues >= 1) {
+    return 'beginner';
+  }
+
+  // Intermediate: Established but not massive, with some contribution opportunities
+  if (stars >= 500 && stars < 10000 && totalIssues >= 1) {
+    return 'intermediate';
+  }
+
+  // Intermediate: Medium-sized repos with recent activity
+  if (stars >= 300 && stars < 15000 && forks >= 200) {
+    return 'intermediate';
+  }
+
+  // Advanced: Large, popular repositories
+  if (stars >= 15000 || forks >= 1000) {
+    return 'advanced';
+  }
+
+  // Default to intermediate for everything else
+  return 'intermediate';
+}
+
+// Helper function to balance difficulty levels in results
+function balanceDifficultyLevels(repos, targetCount) {
+  const beginner = repos.filter(r => r.difficulty_level === 'beginner');
+  const intermediate = repos.filter(r => r.difficulty_level === 'intermediate');
+  const advanced = repos.filter(r => r.difficulty_level === 'advanced');
+
+  // Target distribution: 40% intermediate, 30% beginner, 30% advanced
+  const targetBeginner = Math.max(1, Math.floor(targetCount * 0.3));
+  const targetIntermediate = Math.max(1, Math.floor(targetCount * 0.4));
+  const targetAdvanced = Math.max(1, Math.floor(targetCount * 0.3));
+
+  const result = [
+    ...beginner.slice(0, targetBeginner),
+    ...intermediate.slice(0, targetIntermediate),
+    ...advanced.slice(0, targetAdvanced)
+  ];
+
+  if (result.length < targetCount) {
+    const remaining = targetCount - result.length;
+    const allRepos = [...repos];
+    const usedIds = new Set(result.map(r => r.id));
+    
+    const additionalRepos = allRepos
+      .filter(r => !usedIds.has(r.id))
+      .slice(0, remaining);
+    
+    result.push(...additionalRepos);
+  }
+
+  return shuffleArray(result).slice(0, targetCount);
+}
+
+function shuffleArray(array) {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
+function getDifficultyBreakdown(repos) {
+  const breakdown = {
+    beginner: 0,
+    intermediate: 0,
+    advanced: 0
+  };
+
+  repos.forEach(repo => {
+    breakdown[repo.difficulty_level]++;
+  });
+
+  return breakdown;
+}
+
+function getDateDaysAgo(days) {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return date.toISOString().split('T')[0];
+}
+
 function calculateTrendingScore(repo, goodFirstIssues, helpWantedIssues, recentCommits, dateFilter) {
   const daysSinceCreated = Math.max(1, Math.floor((Date.now() - new Date(repo.created_at)) / (1000 * 60 * 60 * 24)));
   const daysSinceUpdated = Math.max(1, Math.floor((Date.now() - new Date(repo.updated_at)) / (1000 * 60 * 60 * 24)));
   
-  // Base score from stars and growth rate
   const baseScore = repo.stargazers_count / Math.sqrt(daysSinceCreated);
-  
-  // Contribution opportunities boost
   const contributionBoost = (goodFirstIssues * 3 + helpWantedIssues * 2) * 10;
-  
-  // Recent activity boost
   const activityBoost = recentCommits * 5 + Math.max(0, 30 - daysSinceUpdated) * 2;
-  
-  // New repository boost
   const newRepoBoost = daysSinceCreated <= 30 ? 50 : 0;
-  
   return Math.round(baseScore + contributionBoost + activityBoost + newRepoBoost);
 }
 
-// Helper function to check if repository is new
 function isNewRepository(createdAt, daysThreshold) {
   const daysSinceCreated = Math.floor((Date.now() - new Date(createdAt)) / (1000 * 60 * 60 * 24));
   return daysSinceCreated <= daysThreshold;
 }
 
-// Helper function to determine difficulty level for trending repos
-function getTrendingDifficultyLevel(repo, goodFirstIssues, helpWantedIssues) {
-  const stars = repo.stargazers_count;
-  const totalIssues = goodFirstIssues + helpWantedIssues;
-  const daysSinceCreated = Math.floor((Date.now() - new Date(repo.created_at)) / (1000 * 60 * 60 * 24));
-
-  // New repos with good first issues are beginner-friendly
-  if (daysSinceCreated <= 30 && goodFirstIssues > 0) return 'beginner';
-  if (goodFirstIssues > 2 && stars < 500) return 'beginner';
-  if (totalIssues > 0 && stars < 2000) return 'intermediate';
-  return 'advanced';
-}
-
-// Helper function to parse GitHub Link header for pagination
 function parseGitHubLinkHeader(linkHeader) {
   if (!linkHeader) return 0;
   
