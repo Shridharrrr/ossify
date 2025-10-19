@@ -70,7 +70,7 @@ export default function AppSidebar({ children }) {
 
         {/* Mobile sidebar - now with desktop styling */}
         <div className="fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-black/85 shadow-lg transform transition-transform duration-300">
-          <div className="flex items-center justify-between h-16 px-4 border-b border-black/85">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-black/85">
             <h2 className={`text-2xl ${domine.className} text-white font-bold`}>
               Oss<span className="text-neutral-400">ify</span>
             </h2>
@@ -222,7 +222,7 @@ export default function AppSidebar({ children }) {
             <div className="flex flex-1 items-center">
               <Link
                 href="/"
-                className="lg:hidden text-xl font-bold text-white"
+                className="lg:hidden text-2xl font-bold text-white"
               >
                 <span className={domine.className}>
                   Oss<span className="text-neutral-400">ify</span>

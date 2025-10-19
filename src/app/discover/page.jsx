@@ -143,11 +143,11 @@ export default function DiscoverPage() {
         <div className="p-4 sm:p-6 lg:p-8 bg-black min-h-screen flex flex-col">
           <div className="mb-6 lg:mb-8">
             <h1
-              className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${rajdhani.className} text-white mb-2`}
+              className={`text-4xl text-center lg:text-left font-bold ${rajdhani.className} text-white mb-2`}
             >
               Welcome, {user?.displayName?.split(" ")[0]}!
             </h1>
-            <p className="text-neutral-400 font-medium text-sm sm:text-base">
+            <p className="text-neutral-400 font-medium text-base text-center lg:text-left">
               Find amazing open source projects that match your skills and
               interests
               {totalCount > 0 &&
@@ -171,11 +171,11 @@ export default function DiscoverPage() {
                   }}
                 />
               </div>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-row gap-3 ">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-white cursor-pointer active:scale-95 px-4 py-3 sm:py-2 text-black rounded-sm hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center text-base sm:text-sm"
+                  className="bg-white cursor-pointer w-full active:scale-95 px-4 py-3 sm:py-2 text-black rounded-sm hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center text-base sm:text-sm"
                 >
                   {loading ? (
                     <>
@@ -411,18 +411,18 @@ export default function DiscoverPage() {
                   >
                     <div className="flex justify-between items-start mb-3 sm:mb-4">
                       <div className="flex-1 min-w-0 overflow-hidden">
-                        <h3 className="font-semibold text-base sm:text-lg text-white hover:text-yellow-300 truncate overflow-ellipsis whitespace-nowrap">
+                        <h3 className="font-semibold text-lg text-white hover:text-yellow-300 truncate overflow-ellipsis whitespace-nowrap">
                           {repo.full_name}
                         </h3>
-                        <p className="text-xs sm:text-sm text-neutral-400 mt-1 truncate">
+                        <p className="text-sm text-neutral-400 mt-1 truncate">
                           by {repo.owner.login}
                         </p>
                       </div>
                     </div>
-                    <p className="text-neutral-300 line-clamp-2 text-xs sm:text-sm mb-2">
+                    <p className="text-neutral-300 line-clamp-2 text-sm mb-2">
                       {repo.description || "No description available"}
                     </p>
-                    <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-neutral-400 mb-3 sm:mb-4 flex-wrap">
+                    <div className="flex items-center gap-4 text-sm text-neutral-400 mb-3 sm:mb-4 flex-wrap">
                       <span className="flex items-center gap-1">
                         <svg
                           className="w-3 h-3 sm:w-4 sm:h-4"
@@ -451,13 +451,13 @@ export default function DiscoverPage() {
                       </span>
                       {repo.language && (
                         <span
-                          className={`px-1.5 py-0.5 sm:px-2 sm:py-1 bg-neutral-800 text-neutral-300 rounded-sm text-xs border-2 border-neutral-700 ${rajdhani.className}`}
+                          className={`px-2 py-1 bg-neutral-800 text-neutral-300 rounded-sm text-xs border-2 border-neutral-700 ${rajdhani.className}`}
                         >
                           {repo.language}
                         </span>
                       )}
                       <span
-                        className={`px-1.5 py-0.5 sm:px-2 sm:py-1 capitalize rounded-sm text-xs border-2 ${getDifficultyColor(
+                        className={`px-2 py-1 capitalize rounded-sm text-xs border-2 ${getDifficultyColor(
                           repo.difficulty_level
                         )}`}
                       >
@@ -466,13 +466,13 @@ export default function DiscoverPage() {
                     </div>
                     <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
                       {repo.total_contribution_opportunities > 0 && (
-                        <div className="bg-neutral-900 border border-neutral-700 rounded-none px-2 py-1.5 sm:px-3 sm:py-2">
-                          <div className="text-green-400 text-xs sm:text-sm">
+                        <div className="bg-neutral-900 border border-neutral-700 rounded-none px-3 py-2">
+                          <div className="text-green-400 text-sm">
                             <span className="font-medium">
                               {repo.good_first_issues} good first issues
                             </span>
                             {repo.help_wanted_issues > 0 && (
-                              <span className="ml-1 sm:ml-2 text-neutral-300">
+                              <span className="ml-2 text-neutral-300">
                                 • {repo.help_wanted_issues} help wanted
                               </span>
                             )}
@@ -486,13 +486,13 @@ export default function DiscoverPage() {
                             {repo.topics.slice(0, 3).map((topic) => (
                               <span
                                 key={topic}
-                                className={`px-1.5 py-0.5 sm:px-2 sm:py-1 bg-neutral-700 text-neutral-300 rounded-none text-xs flex-shrink-0 transition-all duration-200 hover:bg-neutral-600 hover:text-white`}
+                                className={`px-2 py-1 bg-neutral-700 text-neutral-300 rounded-none text-xs flex-shrink-0 transition-all duration-200 hover:bg-neutral-600 hover:text-white`}
                               >
                                 {topic}
                               </span>
                             ))}
                             {repo.topics.length > 6 && (
-                              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-neutral-700 text-neutral-300 rounded-none text-xs flex-shrink-0 transition-all duration-200 hover:bg-neutral-600 hover:text-white">
+                              <span className="px-2 py-1 bg-neutral-700 text-neutral-300 rounded-none text-xs flex-shrink-0 transition-all duration-200 hover:bg-neutral-600 hover:text-white">
                                 +{repo.topics.length - 5}
                               </span>
                             )}
@@ -506,7 +506,7 @@ export default function DiscoverPage() {
                           href={repo.html_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 bg-white text-black px-3 py-2 sm:px-4 sm:py-2 rounded-none hover:bg-gray-100 transition-colors text-xs sm:text-sm text-center font-medium border border-white"
+                          className="flex-1 bg-white text-black px-4 py-2 rounded-none hover:bg-gray-100 transition-colors text-sm text-center font-medium border border-white"
                         >
                           View on GitHub
                         </a>
@@ -521,7 +521,7 @@ export default function DiscoverPage() {
                               saveRepo(repo);
                             }
                           }}
-                          className={`flex-shrink-0 ml-1.5 sm:ml-2 border border-neutral-700 p-1.5 sm:p-2 hover:border-neutral-400 transition-colors ${
+                          className={`flex-shrink-0 ml-2 border border-neutral-700 p-2 hover:border-neutral-400 transition-colors ${
                             isSaved(repo.id)
                               ? "text-white border-neutral-300"
                               : "text-neutral-400 hover:text-white"

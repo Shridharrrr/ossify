@@ -30,11 +30,11 @@ export default function HomePage() {
       <BackgroundRippleEffect rows={12} cols={30} cellSize={48} />
 
       <nav className="bg-transparent backdrop-blur-sm shadow-sm relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-24">
             <div className="text-center flex justify-center">
               <h2
-                className={`text-3xl ${domine.className} text-white font-bold`}
+                className={`text-2xl lg:text-3xl ${domine.className} text-white font-bold`}
               >
                 Oss<span className="text-neutral-400">ify</span>
               </h2>
@@ -86,7 +86,7 @@ export default function HomePage() {
       <main className="flex-1 max-w-7xl mx-auto flex-col justify-center items-center px-4 sm:px-6 lg:px-8 mt-36 relative z-10">
         <div className="text-center">
           <h1
-            className={`text-6xl font-bold text-neutral-400 mb-4 ${instrumentSerif.className} text-center`}
+            className={`lg:text-6xl text-5xl font-bold text-neutral-400 mb-4 ${instrumentSerif.className} text-center`}
           >
             Discover Amazing
             <span className="text-white block text-center">
@@ -94,7 +94,7 @@ export default function HomePage() {
             </span>
           </h1>
 
-          <p className="text-sm mb-5 max-w-2xl mx-auto text-neutral-400 font-medium leading-5 transition-all duration-300 sm:text-base text-center">
+          <p className=" mb-5 lg:max-w-2xl max-w-sm mx-auto text-neutral-400 font-medium leading-5 transition-all duration-300 text-base text-center">
             Find the perfect repositories to contribute to based on your skills,
             interests, and experience.
           </p>
@@ -113,7 +113,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-32 relative z-10">
         <div className="text-center">
           <div
-            className="mb-4 mt-2 sm:mt-3 mx-auto lg:mx-0 px-3 py-2 w-fit text-xs sm:text-sm font-medium text-neutral-400 tracking-tight border-[2px] transition-all duration-300"
+            className="mb-4 mt-2 sm:mt-3 mx-auto lg:mx-0 px-3 py-2 w-fit text-sm font-medium text-neutral-400 tracking-tight border-[2px] transition-all duration-300"
             style={{
               borderImage:
                 "conic-gradient(#d4d4d4 0deg, #171717 90deg, #d4d4d4 180deg, #171717 270deg, #d4d4d4 360deg) 1",
@@ -135,9 +135,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="bg-transparent border-t border-gray-800 py-12 relative z-10">
+      <footer className="bg-transparent border-t border-gray-800 py-6 lg:py-12 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between space-y-6 sm:space-y-0">
+          <div className="flex flex-col lg:flex-row items-center justify-between space-y-5 ">
             <div className="text-center sm:text-left w-full sm:w-60 flex justify-center sm:justify-start order-2 sm:order-1">
               <p className={`text-neutral-500 text-sm ${electrolize.className}`}>
                 ©{new Date().getFullYear()} Ossify. All rights reserved.

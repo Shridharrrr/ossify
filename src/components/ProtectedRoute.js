@@ -11,8 +11,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (!loading && !user) {
-      // Redirect to auth page with current path as redirect parameter
-      router.push(`/auth?redirect=${encodeURIComponent(pathname)}`);
+      router.push(`/auth`);
     }
   }, [user, loading, router, pathname]);
 
