@@ -39,7 +39,7 @@ const ProtectedRoute = ({ children }) => {
             />
           </svg>
         </div>
-        <p className="text-neutral-400 text-sm">Searching the Web</p>
+        <p className="text-neutral-400 text-sm">Just Calm Down</p>
       </div>
     </div>
     );

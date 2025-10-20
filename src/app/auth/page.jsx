@@ -23,16 +23,13 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const { user, signInWithGoogle, signInWithGitHub } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect");
 
   useEffect(() => {
     // Redirect if already authenticated
     if (user) {
-      const redirectUrl = redirect || "/discover";
-      router.push(redirectUrl);
+      router.push("/discover");
     }
-  }, [user, router, redirect]);
+  }, [user, router]);
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -41,8 +38,7 @@ export default function AuthPage() {
     const result = await signInWithGoogle();
 
     if (result.success) {
-      const redirectUrl = redirect || "/discover";
-      router.push(redirectUrl);
+      router.push("/discover");
     } else {
       setError(result.error);
     }
@@ -57,8 +53,7 @@ export default function AuthPage() {
     const result = await signInWithGitHub();
 
     if (result.success) {
-      const redirectUrl = redirect || "/discover";
-      router.push(redirectUrl);
+      router.push("/discover");
     } else {
       setError(result.error);
     }

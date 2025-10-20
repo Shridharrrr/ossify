@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import { Instrument_Serif, Domine, Electrolize } from "next/font/google";
+import { useAuth } from "@/context/AuthContext";
+import { useState} from "react";
 
 const domine = Domine({
   subsets: ["latin"],
@@ -24,6 +26,55 @@ const electrolize = Electrolize({
 
 export default function HomePage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { user } = useAuth();
+
+  const handleOnclick = async () => {
+    setIsLoading(true);
+    setError("");
+
+  try {
+    if (user) {
+      router.push("/discover");
+    } else {
+      router.push("/auth"); 
+    }
+  } catch (e) {
+    setError(e.message || "Something went wrong"); 
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="relative w-12 h-12">
+          <svg className="w-12 h-12 animate-spin" viewBox="0 0 24 24" fill="none">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="3"
+              style={{ color: '#52525b' }}
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              style={{ color: '#ffffff' }}
+            />
+          </svg>
+        </div>
+        <p className="text-neutral-400 text-sm">Just Calm Down</p>
+      </div>
+    </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black flex flex-col relative overflow-hidden">
@@ -73,7 +124,7 @@ export default function HomePage() {
                 </div>
               </Button>
               <Button
-                onClick={() => router.push("/auth")}
+                onClick={handleOnclick}
                 className="bg-white text-black rounded-none px-6 py-2 cursor-pointer hover:bg-gray-100 hover:-translate-y-1 active:scale-95 transition-transform duration-200"
               >
                 Get Started
@@ -101,7 +152,7 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Button
-              onClick={() => router.push("/auth")}
+              onClick={handleOnclick}
               className="bg-white cursor-pointer active:scale-95 text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
             >
               Get Started
@@ -126,7 +177,7 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Button
-              onClick={() => router.push("/auth")}
+              onClick={handleOnclick}
               className="bg-white cursor-pointer active:scale-95 text-black rounded-none px-8 py-5 hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center"
             >
               Get Started Now
