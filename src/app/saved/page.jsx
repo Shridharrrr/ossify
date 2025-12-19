@@ -111,7 +111,7 @@ export default function SavedPage() {
               </p>
               <a
                 href="/discover"
-                className="bg-white text-black px-4 py-2 rounded-sm hover:bg-gray-100 transition-colors inline-block text-sm"
+                className="bg-white text-black px-4 py-2 rounded-none hover:bg-gray-100 transition-colors inline-block text-sm"
               >
                 Discover Repositories
               </a>
@@ -168,13 +168,13 @@ export default function SavedPage() {
                       </span>
                       {repo.language && (
                         <span
-                          className={`px-2 py-1 bg-neutral-800 text-neutral-300 rounded-sm text-xs border-2 border-neutral-700 ${rajdhani.className}`}
+                          className={`px-2 py-1 bg-neutral-800 text-neutral-300 rounded-none text-xs border-2 border-neutral-700 ${rajdhani.className}`}
                         >
                           {repo.language}
                         </span>
                       )}
                       <span
-                        className={`px-2 py-1 capitalize rounded-sm text-xs border-2 ${getDifficultyColor(
+                        className={`px-2 py-1 capitalize rounded-none text-xs border-2 ${getDifficultyColor(
                           repo.difficulty_level
                         )}`}
                       >
@@ -183,7 +183,7 @@ export default function SavedPage() {
                     </div>
 
                     <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
-                      {repo.total_contribution_opportunities > 0 && (
+                      {repo.total_contribution_opportunities > 0 ? (
                         <div className="bg-neutral-900 border border-neutral-700 rounded-none px-3 py-2">
                           <div className="text-green-400 text-sm">
                             <span className="font-medium">
@@ -194,6 +194,17 @@ export default function SavedPage() {
                                 • {repo.help_wanted_issues} help wanted
                               </span>
                             )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-neutral-900/50 border border-neutral-800 rounded-none px-3 py-2">
+                          <div className="text-neutral-400 text-sm flex items-center justify-between">
+                            <span className="font-medium">
+                              Active Community
+                            </span>
+                            <span className="text-xs text-neutral-500">
+                              Updated {new Date(repo.updated_at).toLocaleDateString()}
+                            </span>
                           </div>
                         </div>
                       )}

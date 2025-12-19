@@ -205,7 +205,7 @@ export default function HomePage() {
 
             <div className="flex space-x-6 w-full sm:w-60 justify-center sm:justify-end order-3">
               <a
-                href="https://github.com"
+                href="https://github.com/Shridharrrr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
@@ -213,7 +213,7 @@ export default function HomePage() {
                 <Github size={24} />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/shridharJsx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
@@ -221,19 +221,19 @@ export default function HomePage() {
                 <Twitter size={24} />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/shridhar-mandrekar-53437b326?utm_source=share_via&utm_content=profile&utm_medium=member_android"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
               >
                 <Linkedin size={24} />
               </a>
-              <a
-                href="mailto:hello@ossify.com"
+              {/* <a
+                href="geekyshridhar04@gmail.com"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
               >
                 <Mail size={24} />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

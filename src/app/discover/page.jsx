@@ -42,7 +42,7 @@ const electrolize = Electrolize({
 
 const rajdhani = Rajdhani({
   subsets: ["latin"],
-  weight: "500",
+  weight: "600",
 });
 
 export default function DiscoverPage() {
@@ -143,11 +143,11 @@ export default function DiscoverPage() {
         <div className="p-4 sm:p-6 lg:p-8 bg-black min-h-screen flex flex-col">
           <div className="mb-6 lg:mb-8">
             <h1
-              className={`text-4xl text-center lg:text-left font-bold ${rajdhani.className} text-white mb-2`}
+              className={`text-4xl text-center lg:text-left font-extrabold ${rajdhani.className} text-white mb-2`}
             >
-              Welcome, {user?.displayName?.split(" ")[0]}!
+              Ready to build, {user?.displayName?.split(" ")[0]}!
             </h1>
-            <p className="text-neutral-400 font-medium text-base text-center lg:text-left">
+            <p className="text-neutral-400 font-medium px-8 lg:px-0 text-base text-center lg:text-left">
               Find amazing open source projects that match your skills and
               interests
               {totalCount > 0 &&
@@ -158,29 +158,44 @@ export default function DiscoverPage() {
           {/* Search and Filters */}
           <form onSubmit={handleSearch} className="mb-6 lg:mb-8">
             <div className="flex flex-col lg:flex-row gap-4">
-              <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder="Search repositories..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`px-4 py-3 sm:py-2 w-full font-medium text-white border-[2px] transition-all duration-300 outline-0 placeholder:text-neutral-400 placeholder:font-normal bg-transparent text-base sm:text-sm`}
-                  style={{
-                    borderImage:
-                      "conic-gradient(#d4d4d4 0deg, #171717 90deg, #d4d4d4 180deg, #171717 270deg, #d4d4d4 360deg) 1",
-                  }}
-                />
-              </div>
-              <div className="flex flex-row gap-3 ">
+              <div className="flex-1 flex gap-2">
+                <div className="relative flex-1">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg
+                      className="h-5 w-5 text-neutral-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search repositories..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={`pl-12 pr-4 py-3 sm:py-2 w-full font-medium text-white border-[2px] transition-all duration-300 outline-0 placeholder:text-neutral-400 placeholder:font-normal bg-transparent text-base sm:text-sm`}
+                    style={{
+                      borderImage:
+                        "conic-gradient(#d4d4d4 0deg, #171717 90deg, #d4d4d4 180deg, #171717 270deg, #d4d4d4 360deg) 1",
+                    }}
+                  />
+                </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-white cursor-pointer w-full active:scale-95 px-4 py-3 sm:py-2 text-black rounded-sm hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center text-base sm:text-sm"
+                  className="bg-white cursor-pointer w-auto active:scale-95 px-6 py-3 sm:py-2 text-black rounded-sm hover:bg-gray-100 hover:-translate-y-1 transition-transform duration-200 flex items-center justify-center text-base sm:text-sm font-medium"
                 >
                   {loading ? (
                     <>
                       <svg
-                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-black"
+                        className="animate-spin h-5 w-5 text-black"
                         fill="none"
                         viewBox="0 0 24 24"
                       >
@@ -198,177 +213,178 @@ export default function DiscoverPage() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Searching...
                     </>
                   ) : (
                     <>
-                      <MagnifyingGlassIcon className="h-4 w-4 mr-2" />
-                      Search
+                      <MagnifyingGlassIcon className="h-5 w-5 sm:h-4 sm:w-4" />
+                      <span className="hidden sm:inline ml-2">Search</span>
                     </>
                   )}
                 </button>
-                <div className="flex gap-3">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center border-neutral-800 justify-between px-4 py-3 sm:py-2 bg-black text-white border hover:bg-neutral-800 transition-colors min-w-[140px] sm:min-w-[180px] text-base sm:text-sm">
-                      <span className="truncate">
-                        {selectedLanguage === "all"
-                          ? "Select Languages"
-                          : selectedLanguage.charAt(0).toUpperCase() +
+              </div>
+              <div className="flex flex-row gap-3 justify-end w-full lg:w-auto">
+                <div className="flex gap-3 w-full lg:w-auto">
+                  <div className="flex-1 lg:flex-none">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex items-center border-neutral-800 justify-between px-4 py-3 sm:py-2 bg-black text-white border hover:bg-neutral-800 transition-colors w-full min-w-[140px] sm:min-w-[180px] text-base sm:text-sm">
+                        <span className="truncate">
+                          {selectedLanguage === "all"
+                            ? "Select Languages"
+                            : selectedLanguage.charAt(0).toUpperCase() +
                             selectedLanguage.slice(1)}
-                      </span>
-                      <ChevronDownIcon className="h-4 w-4 ml-2 flex-shrink-0" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-black border border-neutral-700 text-white min-w-[200px] p-0 rounded-none shadow-xl">
-                      <div className="p-2">
-                        <DropdownMenuItem
-                          onClick={() => setSelectedLanguage("all")}
-                          className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 bg-transparent hover:bg-transparent ${
-                            selectedLanguage === "all"
+                        </span>
+                        <ChevronDownIcon className="h-4 w-4 ml-2 flex-shrink-0" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="bg-black border border-neutral-700 text-white min-w-[200px] p-0 rounded-none shadow-xl">
+                        <div className="p-2">
+                          <DropdownMenuItem
+                            onClick={() => setSelectedLanguage("all")}
+                            className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 bg-transparent hover:bg-transparent ${selectedLanguage === "all"
                               ? "bg-black text-white font-medium"
                               : "text-neutral-400 hover:text-white"
-                          }`}
-                        >
-                          <div className="flex items-center">
-                            <span>All Languages</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </div>
+                              }`}
+                          >
+                            <div className="flex items-center">
+                              <span>All Languages</span>
+                            </div>
+                          </DropdownMenuItem>
+                        </div>
 
-                      <div className="border-t border-neutral-700"></div>
+                        <div className="border-t border-neutral-700"></div>
 
-                      <div className="p-2">
-                        {[
-                          {
-                            value: "javascript",
-                            label: "JavaScript",
-                            color: "text-yellow-400",
-                          },
-                          {
-                            value: "python",
-                            label: "Python",
-                            color: "text-blue-400",
-                          },
-                          {
-                            value: "java",
-                            label: "Java",
-                            color: "text-red-400",
-                          },
-                          {
-                            value: "typescript",
-                            label: "TypeScript",
-                            color: "text-blue-300",
-                          },
-                          { value: "go", label: "Go", color: "text-cyan-400" },
-                          {
-                            value: "rust",
-                            label: "Rust",
-                            color: "text-orange-500",
-                          },
-                          {
-                            value: "cpp",
-                            label: "C++",
-                            color: "text-pink-400",
-                          },
-                          {
-                            value: "php",
-                            label: "PHP",
-                            color: "text-purple-400",
-                          },
-                          {
-                            value: "ruby",
-                            label: "Ruby",
-                            color: "text-red-500",
-                          },
-                          {
-                            value: "swift",
-                            label: "Swift",
-                            color: "text-orange-400",
-                          },
-                        ].map((lang) => (
-                          <DropdownMenuItem
-                            key={lang.value}
-                            onClick={() => setSelectedLanguage(lang.value)}
-                            className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 mb-1 last:mb-0 bg-transparent hover:bg-transparent ${
-                              selectedLanguage === lang.value
+                        <div className="p-2">
+                          {[
+                            {
+                              value: "javascript",
+                              label: "JavaScript",
+                              color: "text-yellow-400",
+                            },
+                            {
+                              value: "python",
+                              label: "Python",
+                              color: "text-blue-400",
+                            },
+                            {
+                              value: "java",
+                              label: "Java",
+                              color: "text-red-400",
+                            },
+                            {
+                              value: "typescript",
+                              label: "TypeScript",
+                              color: "text-blue-300",
+                            },
+                            { value: "go", label: "Go", color: "text-cyan-400" },
+                            {
+                              value: "rust",
+                              label: "Rust",
+                              color: "text-orange-500",
+                            },
+                            {
+                              value: "cpp",
+                              label: "C++",
+                              color: "text-pink-400",
+                            },
+                            {
+                              value: "php",
+                              label: "PHP",
+                              color: "text-purple-400",
+                            },
+                            {
+                              value: "ruby",
+                              label: "Ruby",
+                              color: "text-red-500",
+                            },
+                            {
+                              value: "swift",
+                              label: "Swift",
+                              color: "text-orange-400",
+                            },
+                          ].map((lang) => (
+                            <DropdownMenuItem
+                              key={lang.value}
+                              onClick={() => setSelectedLanguage(lang.value)}
+                              className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 mb-1 last:mb-0 bg-transparent hover:bg-transparent ${selectedLanguage === lang.value
                                 ? "text-white font-medium"
                                 : "text-neutral-400 hover:text-white"
-                            }`}
-                          >
-                            <div className="flex items-center">
-                              <span className={lang.color}>●</span>
-                              <span className="ml-2">{lang.label}</span>
-                            </div>
-                          </DropdownMenuItem>
-                        ))}
-                      </div>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                                }`}
+                            >
+                              <div className="flex items-center">
+                                <span className={lang.color}>●</span>
+                                <span className="ml-2">{lang.label}</span>
+                              </div>
+                            </DropdownMenuItem>
+                          ))}
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
 
                   {/* Level Dropdown */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center justify-between px-4 py-3 sm:py-2 border-neutral-800 bg-black text-white border hover:bg-neutral-800 transition-colors min-w-[120px] sm:min-w-[140px] text-base sm:text-sm">
-                      <span className="truncate">
-                        {selectedLevel === "all"
-                          ? "All Levels"
-                          : selectedLevel.charAt(0).toUpperCase() +
+                  <div className="flex-1 lg:flex-none">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex items-center justify-between px-4 py-3 sm:py-2 border-neutral-800 bg-black text-white border hover:bg-neutral-800 transition-colors w-full min-w-[120px] sm:min-w-[140px] text-base sm:text-sm">
+                        <span className="truncate">
+                          {selectedLevel === "all"
+                            ? "All Levels"
+                            : selectedLevel.charAt(0).toUpperCase() +
                             selectedLevel.slice(1)}
-                      </span>
-                      <ChevronDownIcon className="h-4 w-4 ml-2 flex-shrink-0" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-black border border-neutral-700 text-white min-w-[140px] p-0 rounded-none shadow-xl">
-                      <div className="p-2">
-                        <DropdownMenuItem
-                          onClick={() => setSelectedLevel("all")}
-                          className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 bg-transparent hover:bg-transparent ${
-                            selectedLevel === "all"
+                        </span>
+                        <ChevronDownIcon className="h-4 w-4 ml-2 flex-shrink-0" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="bg-black border border-neutral-700 text-white min-w-[140px] p-0 rounded-none shadow-xl">
+                        <div className="p-2">
+                          <DropdownMenuItem
+                            onClick={() => setSelectedLevel("all")}
+                            className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 bg-transparent hover:bg-transparent ${selectedLevel === "all"
                               ? "bg-black text-white font-medium"
                               : "text-neutral-500 hover:text-white"
-                          }`}
-                        >
-                          <div className="flex items-center">
-                            <span>All Levels</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </div>
-
-                      <div className="border-t border-neutral-700"></div>
-
-                      <div className="p-2">
-                        {[
-                          {
-                            value: "beginner",
-                            label: "Beginner",
-                            color: "text-green-400",
-                          },
-                          {
-                            value: "intermediate",
-                            label: "Intermediate",
-                            color: "text-yellow-400",
-                          },
-                          {
-                            value: "advanced",
-                            label: "Advanced",
-                            color: "text-red-400",
-                          },
-                        ].map((level) => (
-                          <DropdownMenuItem
-                            key={level.value}
-                            onClick={() => setSelectedLevel(level.value)}
-                            className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 mb-1 last:mb-0 bg-transparent hover:bg-transparent ${
-                              selectedLevel === level.value
-                                ? "text-white font-medium"
-                                : "text-neutral-500 hover:text-white"
-                            }`}
+                              }`}
                           >
                             <div className="flex items-center">
-                              <span className={level.color}>●</span>
-                              <span className="ml-2">{level.label}</span>
+                              <span>All Levels</span>
                             </div>
                           </DropdownMenuItem>
-                        ))}
-                      </div>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                        </div>
+
+                        <div className="border-t border-neutral-700"></div>
+
+                        <div className="p-2">
+                          {[
+                            {
+                              value: "beginner",
+                              label: "Beginner",
+                              color: "text-green-400",
+                            },
+                            {
+                              value: "intermediate",
+                              label: "Intermediate",
+                              color: "text-yellow-400",
+                            },
+                            {
+                              value: "advanced",
+                              label: "Advanced",
+                              color: "text-red-400",
+                            },
+                          ].map((level) => (
+                            <DropdownMenuItem
+                              key={level.value}
+                              onClick={() => setSelectedLevel(level.value)}
+                              className={`cursor-pointer px-3 py-2.5 rounded-none transition-all duration-200 mb-1 last:mb-0 bg-transparent hover:bg-transparent ${selectedLevel === level.value
+                                ? "text-white font-medium"
+                                : "text-neutral-500 hover:text-white"
+                                }`}
+                            >
+                              <div className="flex items-center">
+                                <span className={level.color}>●</span>
+                                <span className="ml-2">{level.label}</span>
+                              </div>
+                            </DropdownMenuItem>
+                          ))}
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
               </div>
             </div>
@@ -376,7 +392,7 @@ export default function DiscoverPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-900/20 border border-red-700 rounded-lg p-4 mb-6">
+            <div className="bg-red-900/20 border border-red-700 rounded-none p-4 mb-6">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg
@@ -451,13 +467,13 @@ export default function DiscoverPage() {
                       </span>
                       {repo.language && (
                         <span
-                          className={`px-2 py-1 bg-neutral-800 text-neutral-300 rounded-sm text-xs border-2 border-neutral-700 ${rajdhani.className}`}
+                          className={`px-2 py-1 bg-neutral-800 text-neutral-300 rounded-none text-xs border-2 border-neutral-700 ${rajdhani.className}`}
                         >
                           {repo.language}
                         </span>
                       )}
                       <span
-                        className={`px-2 py-1 capitalize rounded-sm text-xs border-2 ${getDifficultyColor(
+                        className={`px-2 py-1 capitalize rounded-none text-xs border-2 ${getDifficultyColor(
                           repo.difficulty_level
                         )}`}
                       >
@@ -465,7 +481,7 @@ export default function DiscoverPage() {
                       </span>
                     </div>
                     <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
-                      {repo.total_contribution_opportunities > 0 && (
+                      {repo.total_contribution_opportunities > 0 ? (
                         <div className="bg-neutral-900 border border-neutral-700 rounded-none px-3 py-2">
                           <div className="text-green-400 text-sm">
                             <span className="font-medium">
@@ -476,6 +492,17 @@ export default function DiscoverPage() {
                                 • {repo.help_wanted_issues} help wanted
                               </span>
                             )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-neutral-900/50 border border-neutral-800 rounded-none px-3 py-2">
+                          <div className="text-neutral-400 text-sm flex items-center justify-between">
+                            <span className="font-medium">
+                              Active Community
+                            </span>
+                            <span className="text-xs text-neutral-500">
+                              Updated {new Date(repo.updated_at).toLocaleDateString()}
+                            </span>
                           </div>
                         </div>
                       )}
@@ -521,11 +548,10 @@ export default function DiscoverPage() {
                               saveRepo(repo);
                             }
                           }}
-                          className={`flex-shrink-0 ml-2 border border-neutral-700 p-2 hover:border-neutral-400 transition-colors ${
-                            isSaved(repo.id)
-                              ? "text-white border-neutral-300"
-                              : "text-neutral-400 hover:text-white"
-                          }`}
+                          className={`flex-shrink-0 ml-2 border border-neutral-700 p-2 hover:border-neutral-400 transition-colors ${isSaved(repo.id)
+                            ? "text-white border-neutral-300"
+                            : "text-neutral-400 hover:text-white"
+                            }`}
                         >
                           <svg
                             className="w-4 h-4 sm:w-5 sm:h-5"
@@ -607,7 +633,7 @@ export default function DiscoverPage() {
                     setSelectedLevel("all");
                     handleSearch();
                   }}
-                  className="bg-white text-black px-4 py-2 rounded-sm hover:bg-gray-100 transition-colors text-sm"
+                  className="bg-white text-black px-4 py-2 rounded-none hover:bg-gray-100 transition-colors text-sm"
                 >
                   Show All Repositories
                 </button>
@@ -658,7 +684,7 @@ export default function DiscoverPage() {
             </div>
           )}
         </div>
-      </AppSidebar>
-    </ProtectedRoute>
+      </AppSidebar >
+    </ProtectedRoute >
   );
 }

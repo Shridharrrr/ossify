@@ -14,7 +14,7 @@ export async function GET(request) {
 
     // Build GitHub search query
     let searchQuery = query;
-    
+
     // Add language filter
     if (language && language !== 'all') {
       searchQuery += ` language:${language.toLowerCase()}`;
@@ -67,7 +67,7 @@ export async function GET(request) {
             `${GITHUB_API_BASE}/search/issues?q=repo:${repo.full_name}+label:"good first issue"+state:open`,
             { headers }
           );
-          
+
           let goodFirstIssues = 0;
           if (issuesResponse.ok) {
             const issuesData = await issuesResponse.json();
@@ -79,7 +79,7 @@ export async function GET(request) {
             `${GITHUB_API_BASE}/search/issues?q=repo:${repo.full_name}+label:"help wanted"+state:open`,
             { headers }
           );
-          
+
           let helpWantedIssues = 0;
           if (helpWantedResponse.ok) {
             const helpWantedData = await helpWantedResponse.json();
@@ -172,8 +172,8 @@ function getDifficultyLevel(repo, goodFirstIssues, helpWantedIssues) {
 function calculateContributionScore(repo, goodFirstIssues, helpWantedIssues) {
   const baseScore = Math.log(repo.stargazers_count + 1) * 10;
   const issueScore = (goodFirstIssues * 2 + helpWantedIssues) * 5;
-  const activityScore = repo.updated_at ? 
+  const activityScore = repo.updated_at ?
     Math.max(0, 100 - Math.floor((Date.now() - new Date(repo.updated_at)) / (1000 * 60 * 60 * 24 * 30))) : 0;
-  
+
   return Math.round(baseScore + issueScore + activityScore);
 }
