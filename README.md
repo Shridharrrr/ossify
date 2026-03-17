@@ -8,13 +8,13 @@ Ossify surfaces open-source repositories based on your skill level and interests
 
 ## Features
 
-- **Trending repositories** — browse by daily, weekly, or monthly activity
-- **Skill-level filtering** — beginner, intermediate, and advanced project classifications
-- **Language filter** — supports JavaScript, Python, TypeScript, Java, and more
-- **Contribution signals** — highlights repos with `good first issue` and `help wanted` labels
-- **Saved repositories** — bookmark projects and sync them across sessions via Firestore
-- **User preferences** — set default languages, topics, and experience level
-- **Responsive layout** — works on desktop, tablet, and mobile
+- **Trending repositories** - browse by daily, weekly, or monthly activity
+- **Skill-level filtering** - beginner, intermediate, and advanced project classifications
+- **Language filter** - supports JavaScript, Python, TypeScript, Java, and more
+- **Contribution signals** - highlights repos with `good first issue` and `help wanted` labels
+- **Saved repositories** - bookmark projects and sync them across sessions via Firestore
+- **User preferences** - set default languages, topics, and experience level
+- **Responsive layout** - works on desktop, tablet, and mobile
 
 ## Tech stack
 
