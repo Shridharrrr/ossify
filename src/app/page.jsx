@@ -188,29 +188,32 @@ export default function HomePage() {
 
       <footer className="bg-transparent border-t border-gray-800 py-6 lg:py-12 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between space-y-5 ">
-            <div className="text-center sm:text-left w-full sm:w-60 flex justify-center sm:justify-start order-2 sm:order-1">
+          {/* Desktop: 3-column grid — Mobile: stacked centered */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-6 lg:gap-0">
+
+            {/* Left: Copyright — hidden on mobile, shown on desktop */}
+            <div className="hidden lg:flex justify-start">
               <p className={`text-neutral-500 text-sm ${electrolize.className}`}>
                 ©{new Date().getFullYear()} Ossify. All rights reserved.
               </p>
             </div>
 
-            <div className="text-center flex justify-center order-1 sm:order-2">
-              <h2
-                className={`text-2xl ${domine.className} text-white font-bold`}
-              >
+            {/* Center: Logo */}
+            <div className="flex justify-center">
+              <h2 className={`text-2xl ${domine.className} text-white font-bold`}>
                 Oss<span className="text-neutral-400">ify</span>
               </h2>
             </div>
 
-            <div className="flex space-x-6 w-full sm:w-60 justify-center sm:justify-end order-3">
+            {/* Right: Social icons */}
+            <div className="flex justify-center lg:justify-end space-x-6">
               <a
                 href="https://github.com/Shridharrrr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
               >
-                <Github size={24} />
+                <Github size={20} />
               </a>
               <a
                 href="https://x.com/shridharJsx"
@@ -218,7 +221,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
               >
-                <Twitter size={24} />
+                <Twitter size={20} />
               </a>
               <a
                 href="https://www.linkedin.com/in/shridhar-mandrekar-53437b326?utm_source=share_via&utm_content=profile&utm_medium=member_android"
@@ -226,15 +229,17 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors duration-200"
               >
-                <Linkedin size={24} />
+                <Linkedin size={20} />
               </a>
-              {/* <a
-                href="geekyshridhar04@gmail.com"
-                className="text-neutral-400 hover:text-white transition-colors duration-200"
-              >
-                <Mail size={24} />
-              </a> */}
             </div>
+
+            {/* Copyright on mobile — centered below icons */}
+            <div className="flex lg:hidden justify-center">
+              <p className={`text-neutral-500 text-sm ${electrolize.className}`}>
+                ©{new Date().getFullYear()} Ossify. All rights reserved.
+              </p>
+            </div>
+
           </div>
         </div>
       </footer>

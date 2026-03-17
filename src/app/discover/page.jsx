@@ -117,16 +117,44 @@ export default function DiscoverPage() {
     });
   };
 
-  const getDifficultyColor = (level) => {
+  const getDifficultyConfig = (level) => {
     switch (level) {
       case "beginner":
-        return "bg-green-400/20 text-green-500 border-green-500";
+        return {
+          dot: "bg-green-400",
+          text: "text-green-400",
+          bg: "bg-green-400/10",
+          border: "border-green-500/40",
+          shadow: "shadow-[0_0_8px_rgba(74,222,128,0.2)]",
+          label: "Beginner",
+        };
       case "intermediate":
-        return "bg-yellow-400/20 text-yellow-500 border-yellow-500";
+        return {
+          dot: "bg-yellow-400",
+          text: "text-yellow-400",
+          bg: "bg-yellow-400/10",
+          border: "border-yellow-500/40",
+          shadow: "shadow-[0_0_8px_rgba(250,204,21,0.2)]",
+          label: "Intermediate",
+        };
       case "advanced":
-        return "bg-red-400/20 text-red-500 border-red-500";
+        return {
+          dot: "bg-red-400",
+          text: "text-red-400",
+          bg: "bg-red-400/10",
+          border: "border-red-500/40",
+          shadow: "shadow-[0_0_8px_rgba(248,113,113,0.2)]",
+          label: "Advanced",
+        };
       default:
-        return "bg-gray-100 text-gray-800";
+        return {
+          dot: "bg-neutral-500",
+          text: "text-neutral-400",
+          bg: "bg-neutral-800",
+          border: "border-neutral-600",
+          shadow: "",
+          label: level ?? "Unknown",
+        };
     }
   };
 
@@ -472,13 +500,17 @@ export default function DiscoverPage() {
                           {repo.language}
                         </span>
                       )}
-                      <span
-                        className={`px-2 py-1 capitalize rounded-none text-xs border-2 ${getDifficultyColor(
-                          repo.difficulty_level
-                        )}`}
-                      >
-                        {repo.difficulty_level}
-                      </span>
+                      {(() => {
+                        const cfg = getDifficultyConfig(repo.difficulty_level);
+                        return (
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium border ${cfg.bg} ${cfg.border} ${cfg.text} ${cfg.shadow}`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${cfg.dot}`} />
+                            {cfg.label}
+                          </span>
+                        );
+                      })()}
                     </div>
                     <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
                       {repo.total_contribution_opportunities > 0 ? (

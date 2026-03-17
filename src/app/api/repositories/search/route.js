@@ -161,10 +161,11 @@ export async function GET(request) {
 // Helper function to determine difficulty level
 function getDifficultyLevel(repo, goodFirstIssues, helpWantedIssues) {
   const stars = repo.stargazers_count;
-  const totalIssues = goodFirstIssues + helpWantedIssues;
 
-  if (goodFirstIssues > 0 && stars < 1000) return 'beginner';
-  if (totalIssues > 0 && stars < 5000) return 'intermediate';
+  // Several explicitly beginner-tagged issues and a manageable project size
+  if (goodFirstIssues >= 3 && stars < 10000) return 'beginner';
+  // At least one good-first-issue OR significant help-wanted, still approachable size
+  if ((goodFirstIssues >= 1 || helpWantedIssues >= 3) && stars < 50000) return 'intermediate';
   return 'advanced';
 }
 
