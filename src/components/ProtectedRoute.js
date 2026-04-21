@@ -24,12 +24,6 @@ const ProtectedRoute = ({ children }) => {
           <svg className="w-12 h-12 animate-spin" viewBox="0 0 24 24" fill="none">
             <circle
               className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="3"
-              style={{ color: '#52525b' }}
             />
             <path
               className="opacity-75"
@@ -39,7 +33,7 @@ const ProtectedRoute = ({ children }) => {
             />
           </svg>
         </div>
-        <p className="text-neutral-400 text-sm">Just Calm Down</p>
+        <p className="text-neutral-400 text-sm">Just Take a chill pill</p>
       </div>
     </div>
     );
